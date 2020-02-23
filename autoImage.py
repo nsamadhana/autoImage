@@ -11,24 +11,23 @@ try:
 except:
     print("Unable to verify access key")
 
-category = input("Hello good sir, what would you like to query for today?\n")
+print("*"*30)
+print("Enter d for a default wallpaper")
+print("*"*30)
+category = input("Hallo Samadhana, what are we feeling today?\n")
+
+if category == "d":
+    category = "wallpapers"
+
 #Return random image
 result = unsplash.search_photo(category)
 print(result)
 imageURL = result["img"]  
-print(imageURL)
+
 filePath = r"C:\Users\nevan\Documents\pythonProjects\autoImage\image.jpg"
 fileName = "image.jpg"
 
 #Download image and set as background  
 r = urllib.request.urlretrieve(imageURL, fileName)
-time.sleep(3)
 ctypes.windll.user32.SystemParametersInfoW(20, 0, filePath, 0)
 print("done")
-
-
-
-
-
-
-
