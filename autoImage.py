@@ -1,8 +1,10 @@
 import os
+import time     
+import shutil
 import ctypes
 import urllib.request
 from unsplash_search import UnsplashSearch
-import time     
+
 
 accessKey = "o7QajBCO4rG2PcSDCnC8-Q6VZokvDUDY2sb8-bvAcOI"
 
@@ -27,20 +29,22 @@ owner = result["credits"]
 print(type(owner))
 
 
-filePath = r"C:\Users\nevan\Documents\pythonProjects\autoImage"
+dirPath = r"C:\Users\nevan\Documents\pythonProjects\autoImage"
 fileName = owner + ".jpg"
+imgPath = os.path.join(dirPath, fileName)
 
 #Download image and set as background  
 r = urllib.request.urlretrieve(imageURL, fileName)
-ctypes.windll.user32.SystemParametersInfoW(20, 0, filePath, 0)
-time.sleep(2)
+ctypes.windll.user32.SystemParametersInfoW(20, 0, imgPath, 0)
+time.sleep(1)
+
 
 delete = input("Do you want to save this image? y/n\n")
-if delete == "y": 
+if delete == "n": 
     os.remove(fileName)
 else: 
-    os.rename(filePath + + fileName, filePath + "savedImages"  + fileName)
-    shutil.move(filePath + fileName, filePath + "savedImages")
-    os.replace(filePath + fileName, filePath + "savedImages"  + fileName)
+    savedPath = os.path.join(dirPath, "savedImages")
+    os.rename(imgPath, os.path.join(savedPath, fileName))
+    shutil.move(imgPath, savedPath)
+    os.replace(imgPath, os.path.join(savedPath, fileName))
 
-print("All done")
