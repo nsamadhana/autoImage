@@ -23,11 +23,24 @@ if category == "d":
 result = unsplash.search_photo(category)
 print(result)
 imageURL = result["img"]  
+owner = result["credits"]
+print(type(owner))
 
-filePath = r"C:\Users\nevan\Documents\pythonProjects\autoImage\image.jpg"
-fileName = "image.jpg"
+
+filePath = r"C:\Users\nevan\Documents\pythonProjects\autoImage"
+fileName = owner + ".jpg"
 
 #Download image and set as background  
 r = urllib.request.urlretrieve(imageURL, fileName)
 ctypes.windll.user32.SystemParametersInfoW(20, 0, filePath, 0)
-print("done")
+time.sleep(2)
+
+delete = input("Do you want to save this image? y/n\n")
+if delete == "y": 
+    os.remove(fileName)
+else: 
+    os.rename(filePath + + fileName, filePath + "savedImages"  + fileName)
+    shutil.move(filePath + fileName, filePath + "savedImages")
+    os.replace(filePath + fileName, filePath + "savedImages"  + fileName)
+
+print("All done")
