@@ -2,11 +2,12 @@ import os
 import time     
 import shutil
 import ctypes
+import config
 import urllib.request
 from unsplash_search import UnsplashSearch
 
 
-accessKey = "o7QajBCO4rG2PcSDCnC8-Q6VZokvDUDY2sb8-bvAcOI"
+accessKey = config.apiKey
 
 try:
     unsplash = UnsplashSearch(accessKey)
@@ -29,14 +30,14 @@ owner = result["credits"]
 print(type(owner))
 
 
-dirPath = r"C:\Users\nevan\Documents\pythonProjects\autoImage"
+dirPath = config.dirPath
 fileName = owner + ".jpg"
 imgPath = os.path.join(dirPath, fileName)
 
 #Download image and set as background  
 r = urllib.request.urlretrieve(imageURL, fileName)
 ctypes.windll.user32.SystemParametersInfoW(20, 0, imgPath, 0)
-time.sleep(1)
+time.sleep(0.5)
 
 
 delete = input("Do you want to save this image? y/n\n")
