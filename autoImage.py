@@ -20,14 +20,13 @@ print("*"*30)
 category = input("Hallo Samadhana, what are we feeling today?\n")
 
 if category == "d":
-    category = "wallpapers"
+    category = "Wallpapers"
 
 #Return random image
 result = unsplash.search_photo(category)
 print(result)
 imageURL = result["img"]  
 owner = result["credits"]
-print(type(owner))
 
 
 dirPath = config.dirPath
