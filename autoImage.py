@@ -4,13 +4,14 @@ import shutil
 import ctypes
 import config
 import urllib.request
+import requests
 from unsplash_search import UnsplashSearch
 
 
-accessKey = config.apiKey
+
 
 try:
-    unsplash = UnsplashSearch(accessKey)
+    unsplash = UnsplashSearch(config.apiKey)
 except:
     print("Unable to verify access key")
 
@@ -23,11 +24,14 @@ if category == "d":
     category = "Wallpapers"
 
 #Return random image
-result = unsplash.search_photo(category)
-print(result)
+#result = unsplash.search_photo(category)
+r = requests.get("https://api.unsplash.com/search/photos?query=" + category + "&client_id=" + config.apiKey)
+print(r.content)
+
+
+'''
 imageURL = result["img"]  
 owner = result["credits"]
-
 
 dirPath = config.dirPath
 fileName = owner + ".jpg"
@@ -48,3 +52,4 @@ else:
     shutil.move(imgPath, savedPath)
     os.replace(imgPath, os.path.join(savedPath, fileName))
 
+'''
