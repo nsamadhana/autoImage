@@ -8,8 +8,6 @@ import requests
 from unsplash_search import UnsplashSearch
 
 
-
-
 try:
     unsplash = UnsplashSearch(config.apiKey)
 except:
