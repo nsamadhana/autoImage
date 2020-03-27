@@ -30,22 +30,20 @@ category = input("Hallo Samadhana, what are we feeling today?\n")
 
 if category == "d": category = "Wallpapers"
 #result = unsplash.search_photo(category)
-
 '''
-#Parse json object
 imageURL = result["img"]  
 owner = result["credits"]
 dirPath = config.dirPath
 fileName = owner + ".jpg"
 imgPath = os.path.join(dirPath, fileName)
 '''
+
 details = queryImage(category)
 imageURL = details[0] 
 owner = details[1]
 dirPath = details[2]
 fileName = details[3]
 imgPath = details[4]
-
 
 #Display sample images 
 urllib.request.urlretrieve(imageURL, fileName)
@@ -54,9 +52,33 @@ img.show()
 
 #Find suitable image 
 keep = input("keep?").lower()
+img.close()
 while keep != "y":
-    img.close()
     os.remove(fileName)
+    details = queryImage(category)
+    imageURL = details[0] 
+    owner = details[1]
+    dirPath = details[2]
+    fileName = details[3]
+    imgPath = details[4]
+    urllib.request.urlretrieve(imageURL, fileName)
+    img = Image.open(imgPath)
+    img.show()
+    keep = input("keep?").lower()
+    img.close()
+
+#Download image locally/Set as background 
+urllib.request.urlretrieve(imageURL, fileName)
+ctypes.windll.user32.SystemParametersInfoW(20, 0, imgPath, 0)
+
+save = input("Do you want to save this image?").lower()
+if save == "y":
+    savedPath = os.path.join(dirPath, "savedImages")
+    os.rename(imgPath, os.path.join(savedPath, fileName))
+    shutil.move(imgPath, savedPath)
+    os.replace(imgPath, os.path.join(savedPath, fileName))
+else:
+    print("bye bye")
 
 
 '''
