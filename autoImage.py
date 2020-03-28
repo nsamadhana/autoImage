@@ -7,6 +7,11 @@ import urllib.request
 from PIL import Image
 from unsplash_search import UnsplashSearch
 
+#Todo 
+#Write recursive method for multiple queries 
+#Fix img not closing issue 
+#Refactor 
+
 def queryImage(category):
     result = unsplash.search_photo(category) 
     details = []
@@ -27,16 +32,7 @@ print("*"*30)
 print("Enter 'd' for a default wallpaper")
 print("*"*30)
 category = input("Hallo Samadhana, what are we feeling today?\n")
-
 if category == "d": category = "Wallpapers"
-#result = unsplash.search_photo(category)
-'''
-imageURL = result["img"]  
-owner = result["credits"]
-dirPath = config.dirPath
-fileName = owner + ".jpg"
-imgPath = os.path.join(dirPath, fileName)
-'''
 
 details = queryImage(category)
 imageURL = details[0] 
@@ -51,9 +47,9 @@ img = Image.open(imgPath)
 img.show()
 
 #Find suitable image 
-keep = input("keep?").lower()
-img.close()
-while keep != "y":
+happy = input("happy?").lower()
+img.load()
+while happy != "y": #U suck at programming this loop is disgusting 
     os.remove(fileName)
     details = queryImage(category)
     imageURL = details[0] 
@@ -64,8 +60,7 @@ while keep != "y":
     urllib.request.urlretrieve(imageURL, fileName)
     img = Image.open(imgPath)
     img.show()
-    keep = input("keep?").lower()
-    img.close()
+    happy = input("happy?").lower() 
 
 #Download image locally/Set as background 
 urllib.request.urlretrieve(imageURL, fileName)
@@ -75,37 +70,5 @@ save = input("Do you want to save this image?").lower()
 if save == "y":
     savedPath = os.path.join(dirPath, "savedImages")
     os.rename(imgPath, os.path.join(savedPath, fileName))
-    shutil.move(imgPath, savedPath)
-    os.replace(imgPath, os.path.join(savedPath, fileName))
-else:
-    print("bye bye")
-
-
-'''
-if keep == "y":
-    img.close() 
-    urllib.request.urlretrieve(imageURL, fileName)
-    ctypes.windll.user32.SystemParametersInfoW(20, 0, imgPath, 0)
-else:  
-    img.close()
-    os.remove(fileName)
-
-delete = input("Do you want to save this image? y/n\n")
-if delete == "n": 
-    os.remove(fileName)
-else: 
-    savedPath = os.path.join(dirPath, "savedImages")
-    os.rename(imgPath, os.path.join(savedPath, fileName))
-    shutil.move(imgPath, savedPath)
-    os.replace(imgPath, os.path.join(savedPath, fileName))
-'''
-
-
-'''
-#Download image/set as background    
-r = urllib.request.urlretrieve(imageURL, fileName)
-ctypes.windll.user32.SystemParametersInfoW(20, 0, imgPath, 0)
-time.sleep(0.5)
-'''
-
-    
+    #shutil.move(imgPath, savedPath)
+    #os.replace(imgPath, os.path.join(savedPath, fileName))
