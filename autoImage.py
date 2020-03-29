@@ -1,6 +1,7 @@
 import os
 import time     
 import shutil
+import psutil 
 import ctypes
 import config
 import urllib.request
@@ -47,7 +48,8 @@ img = Image.open(imgPath)
 img.show()
 
 #Find suitable image 
-happy = input("happy?").lower()
+happy = input("happy?\n").lower()
+
 img.load()
 while happy != "y": #U suck at programming this loop is disgusting 
     os.remove(fileName)
@@ -60,15 +62,21 @@ while happy != "y": #U suck at programming this loop is disgusting
     urllib.request.urlretrieve(imageURL, fileName)
     img = Image.open(imgPath)
     img.show()
-    happy = input("happy?").lower() 
+    happy = input("happy?\n").lower() 
+    img.close
 
 #Download image locally/Set as background 
 urllib.request.urlretrieve(imageURL, fileName)
 ctypes.windll.user32.SystemParametersInfoW(20, 0, imgPath, 0)
 
-save = input("Do you want to save this image?").lower()
+save = input("Do you want to save this image?\n").lower()
 if save == "y":
     savedPath = os.path.join(dirPath, "savedImages")
     os.rename(imgPath, os.path.join(savedPath, fileName))
     #shutil.move(imgPath, savedPath)
     #os.replace(imgPath, os.path.join(savedPath, fileName))
+
+#Close all images 
+for proc in psutil.process_iter():
+    if proc.name() == "display":
+        proc.kill()
